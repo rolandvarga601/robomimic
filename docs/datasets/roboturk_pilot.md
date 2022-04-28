@@ -26,3 +26,16 @@ First, the dataset must be updated to a format compatible with **robomimic**. Ru
 $ python conversion/convert_roboturk_pilot.py --folder /path/to/RoboTurkPilot/bins-Can --n 225
 ```
 Then, the dataset must be postprocessed since there are no observations stored. You must run `dataset_states_to_obs.py`. For more information, see [this page](robosuite.html#extracting-observations-from-mujoco-states).
+
+## Citation
+
+```sh
+@inproceedings{mandlekar2018roboturk,
+  title={Roboturk: A crowdsourcing platform for robotic skill learning through imitation},
+  author={Mandlekar, Ajay and Zhu, Yuke and Garg, Animesh and Booher, Jonathan and Spero, Max and Tung, Albert and Gao, Julian and Emmons, John and Gupta, Anchit and Orbay, Emre and others},
+  booktitle={Conference on Robot Learning},
+  pages={879--893},
+  year={2018},
+  organization={PMLR}
+}
+```

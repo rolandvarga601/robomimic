@@ -48,9 +48,10 @@ $ python download_datasets.py --download_dir /tmp/datasets
 
 ### Method 2: Using Direct Download Links
 
-For each type of dataset, we also provide a direct download links that will download the raw HDF5 file:
+For each type of dataset, we also provide a direct download links that will download the raw HDF5 file – it allows flexibility in extracting different kinds of observations and rewards:
 
 **Proficient-Human (PH)** [**info**](robomimic_v0.1.html#proficient-human-ph)
+
 <details>
   <summary><b>Download Links</b></summary>
 <p>
@@ -72,7 +73,11 @@ For each type of dataset, we also provide a direct download links that will down
 </p>
 </details>
 
+<br/>
+<br/>
+
 **Multi-Human (MH)** [**info**](robomimic_v0.1.html#multi-human-mh)
+
 <details>
   <summary><b>Download Links</b></summary>
 <p>
@@ -88,7 +93,11 @@ For each type of dataset, we also provide a direct download links that will down
 </p>
 </details>
 
+<br/>
+<br/>
+
 **Machine-Generated (MG)** [**info**](robomimic_v0.1.html#machine-generated-mg)
+
 <details>
   <summary><b>Download Links</b></summary>
 <p>
@@ -107,7 +116,11 @@ For each type of dataset, we also provide a direct download links that will down
 </p>
 </details>
 
+<br/>
+<br/>
+
 **Paired** [**info**](robomimic_v0.1.html#paired)
+
 <details>
   <summary><b>Download Links</b></summary>
 <p>
@@ -202,4 +215,15 @@ $ python generate_paper_configs.py --output_dir /tmp/experiment_results
 # the training command can be found in robomimic/exps/paper/core.sh
 # Training results can be viewed at /tmp/experiment_results (--output_dir when generating paper configs).
 $ python train.py --config ../exps/paper/core/lift/ph/low_dim/bc.json
+```
+
+## Citation
+
+```sh
+@inproceedings{mandlekar2021matters,
+  title={What Matters in Learning from Offline Human Demonstrations for Robot Manipulation},
+  author={Mandlekar, Ajay and Xu, Danfei and Wong, Josiah and Nasiriany, Soroush and Wang, Chen and Kulkarni, Rohun and Fei-Fei, Li and Savarese, Silvio and Zhu, Yuke and Mart{\'\i}n-Mart{\'\i}n, Roberto},
+  booktitle={5th Annual Conference on Robot Learning},
+  year={2021}
+}
 ```
