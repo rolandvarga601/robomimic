@@ -7,6 +7,9 @@ datasets/
 # local test dataset that is lazily downloaded by example scripts
 tests/assets/test.hdf5
 
+# datasets used for own project
+/custom/data/
+
 # pycharm configs
 .idea/
 
