@@ -65,19 +65,25 @@ def setup_encoder():
         net_kwargs=net_kwargs,
     )
 
-    # We could mix low-dimensional observation, e.g., proprioception signal, in the encoder
-    proprio_shape = [3]
-    net = MLP(input_dim=3, output_dim=10, layer_dims=(128,), output_activation=None)
+    # We could mix low-dimensional observation, e.g., endeffector position signal, in the encoder
+    eef_pos_shape = [3]
+    net = MLP(input_dim=17, output_dim=32, layer_dims=(32,64,128,), output_activation=None)
     obs_encoder.register_obs_key(
-        name="robot0_eef_pos",
-        shape=proprio_shape,
+        name="proprioception",
+        shape=eef_pos_shape,
         net=net,
     )
 
     # Before constructing the encoder, make sure we register all of our observation keys with corresponding modalities
     # (this will determine how they are processed during training)
     obs_modality_mapping = {
-        "low_dim": ["robot0_eef_pos", "robot0_eef_quat", "robot0_gripper_qpos"],
+        "low_dim": ["robot0_eef_pos", 
+            "robot0_eef_quat", 
+            "robot0_eef_vel_ang",
+            "robot0_eef_vel_lin",
+            "robot0_gripper_qpos", 
+            "robot0_gripper_qvel", 
+            "object", ],
         "rgb": ["agentview_image"],
     }
     ObsUtils.initialize_obs_modality_mapping_from_dict(modality_mapping=obs_modality_mapping)
@@ -108,11 +114,15 @@ if __name__ == "__main__":
     obs_encoder = setup_encoder()
 
     # This helps loading the data for training
-    data_loader = get_data_loader(dataset_path=dataset_path)
+    data_loader = get_data_loader(dataset_path=dataset_path, seq_length=10)
 
     sample = next(iter(data_loader))
 
     print(f"The first element of the batch for eef position (10 sample sequence): {sample['obs']['robot0_eef_pos'][0]}")
+    
+    # for sensor in sample['obs']:
+    #     print(sample['obs']["{}".format(sensor)][0])
+
     # print(f"Labels batch shape: {train_labels.size()}")
 
     # Training the encoder network

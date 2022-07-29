@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/robomimic/scripts/dataset_states_to_obs.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--dataset",
+                "/home/rvarga/implementation/robomimic/custom/data/offline_pick_raw.hdf5",
+                "--output_name",
+                "offline_pick_extended.hdf5"
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/rvarga/Data/Delft/thesis/implementation/robosuite/robosuite/scripts/collect_human_demonstrations.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--environment",
+                "PickPlaceCan",
+                "--directory",
+                "/home/rvarga/implementation/robosuite/robosuite/models/assets/demonstrations/"
+            ],
+            "justMyCode": true
+        }
+    ]
+}
