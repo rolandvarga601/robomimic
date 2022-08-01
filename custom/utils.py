@@ -21,19 +21,15 @@ def get_data_loader(dataset_path, seq_length=1):
     dataset = SequenceDataset(
         hdf5_path=dataset_path,
         obs_keys=(                      # observations we want to appear in batches
-            "agentview_image",
             "robot0_eef_pos", 
-            "robot0_eef_quat",
-            "robot0_eef_vel_ang",
-            "robot0_eef_vel_lin",
+            "robot0_eef_quat", 
             "robot0_gripper_qpos", 
-            "robot0_gripper_qvel", 
             "object",
         ),
         dataset_keys=(                  # can optionally specify more keys here if they should appear in batches
-            "actions", 
+            # "actions", 
             # "rewards", 
-            "dones",
+            # "dones",
         ),
         load_next_obs=True,
         frame_stack=1,
