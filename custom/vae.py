@@ -253,6 +253,10 @@ def run_train_loop(model, data_loader):
     # ensure model is in train mode
     model.set_train()
 
+    # set download folder
+    ckpt_folder = os.path.join(os.path.dirname(__file__), "ckpt")
+    os.makedirs(ckpt_folder, exist_ok=True)
+
     for epoch in range(1, num_epochs + 1): # epoch numbers start at 1
 
         # iterator for data_loader - it yields batches
@@ -284,6 +288,11 @@ def run_train_loop(model, data_loader):
             # record loss
             step_log = model.log_info(info)
             losses.append(step_log["Loss"])
+
+        # save model
+        model_params = model.serialize()
+        model_dict = dict(model=model.serialize())
+        torch.save(model_dict, os.path.join(ckpt_folder, f"epoch{epoch}" + ".pth"))
 
         # do anything model needs to after finishing epoch
         model.on_epoch_end(epoch)

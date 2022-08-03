@@ -10,6 +10,9 @@ tests/assets/test.hdf5
 # datasets used for own project
 /custom/data/
 
+# directory for trained models and logs
+/custom/exps/vae_rep_trained_models/
+
 # pycharm configs
 .idea/
 
