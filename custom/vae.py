@@ -246,7 +246,7 @@ def run_train_loop(model, data_loader):
         data_loader (torch.utils.data.DataLoader instance): torch DataLoader for
             sampling batches
     """
-    num_epochs = 50
+    num_epochs = 20
     gradient_steps_per_epoch = 100
     has_printed_batch_info = False
 
@@ -283,7 +283,7 @@ def run_train_loop(model, data_loader):
 
             # record loss
             step_log = model.log_info(info)
-            # losses.append(step_log["Loss"])
+            losses.append(step_log["Loss"])
 
         # do anything model needs to after finishing epoch
         model.on_epoch_end(epoch)

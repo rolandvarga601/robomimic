@@ -12,7 +12,7 @@ class VAE_REPConfig(BaseConfig):
         self.algo.optim_params.policy.regularization.L2 = 0.00          # L2 regularization strength
 
         # stochastic VAE policy settings
-        self.algo.vae.enabled = False                   # whether to train a VAE policy
+        self.algo.vae.enabled = True                   # whether to train a VAE policy
         self.algo.vae.latent_dim = 5                    # VAE latent dimnsion - set to twice the dimensionality of action space
         self.algo.vae.latent_clip = None                # clip latent space when decoding (set to None to disable)
         self.algo.vae.kl_weight = 1.                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
