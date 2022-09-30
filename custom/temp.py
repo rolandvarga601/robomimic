@@ -4,7 +4,7 @@ from utils import plot_trajectory
 
 if __name__ == '__main__':
     # hdf5_path = '/home/rvarga/implementation/old_robosuite-master/robosuite/models/assets/demonstrations/SawyerPickAndPlace/image.hdf5'
-    hdf5_path = '/home/rvarga/implementation/robomimic/custom/data/extended_low_dim.hdf5'
+    hdf5_path = '/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5'
 
     # print_hdf5_structure(hdf5_path)
 
@@ -12,5 +12,6 @@ if __name__ == '__main__':
 
     # print(mujoco_xml)
 
-    plot_trajectory(hdf5_path, 199, "obs", "robot0_eef_force")
+    plot_trajectory(hdf5_path, 196, "obs", "robot0_eef_force")
+    # plot_trajectory(hdf5_path, 196, "obs", "robot0_eef_vel_lin")
     # plot_trajectory(hdf5_path, 199, "", "rewards")

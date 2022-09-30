@@ -21,9 +21,13 @@ def get_data_loader(dataset_path, seq_length=1):
     dataset = SequenceDataset(
         hdf5_path=dataset_path,
         obs_keys=(                      # observations we want to appear in batches
+            "robot0_eef_force",
             "robot0_eef_pos", 
-            "robot0_eef_quat", 
-            "robot0_gripper_qpos", 
+            "robot0_eef_quat",
+            "robot0_eef_vel_ang",
+            "robot0_eef_vel_lin",
+            "robot0_gripper_qpos",
+            "robot0_gripper_qvel", 
             "object",
         ),
         dataset_keys=(                  # can optionally specify more keys here if they should appear in batches
@@ -50,7 +54,7 @@ def get_data_loader(dataset_path, seq_length=1):
     data_loader = DataLoader(
         dataset=dataset,
         sampler=None,       # no custom sampling logic (uniform sampling)
-        batch_size=100,     # batches of size 100
+        batch_size=400,     # batches of size 100
         shuffle=True,
         num_workers=0,
         drop_last=True      # don't provide last batch in dataset pass if it's less than 100 in size

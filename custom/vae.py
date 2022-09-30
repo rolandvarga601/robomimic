@@ -73,10 +73,14 @@ def setup_encoder(dataset_path):
     shape_meta = FileUtils.get_shape_metadata_from_dataset(
         dataset_path=dataset_path,
         all_obs_keys=sorted((
-            "object",
+            "robot0_eef_force",
+            "robot0_eef_pos", 
             "robot0_eef_quat",
-            "robot0_eef_pos",
-            "robot0_gripper_qpos"
+            "robot0_eef_vel_ang",
+            "robot0_eef_vel_lin",
+            "robot0_gripper_qpos",
+            "robot0_gripper_qvel", 
+            "object",
         )),
     )
 
@@ -208,9 +212,13 @@ def get_model(dataset_path, device):
     shape_meta = FileUtils.get_shape_metadata_from_dataset(
         dataset_path=dataset_path, 
         all_obs_keys=sorted((
+            "robot0_eef_force",
             "robot0_eef_pos", 
-            "robot0_eef_quat", 
-            "robot0_gripper_qpos", 
+            "robot0_eef_quat",
+            "robot0_eef_vel_ang",
+            "robot0_eef_vel_lin",
+            "robot0_gripper_qpos",
+            "robot0_gripper_qvel", 
             "object",
         )),
     )
@@ -246,7 +254,7 @@ def run_train_loop(model, data_loader):
         data_loader (torch.utils.data.DataLoader instance): torch DataLoader for
             sampling batches
     """
-    num_epochs = 20
+    num_epochs = 200
     gradient_steps_per_epoch = 100
     has_printed_batch_info = False
 
@@ -264,6 +272,8 @@ def run_train_loop(model, data_loader):
 
         # record losses
         losses = []
+        losses_recon = []
+        losses_kl = []
 
         for _ in range(gradient_steps_per_epoch):
 
@@ -288,6 +298,8 @@ def run_train_loop(model, data_loader):
             # record loss
             step_log = model.log_info(info)
             losses.append(step_log["Loss"])
+            losses_recon.append(step_log["Reconstruction_Loss"])
+            losses_kl.append(step_log["KL_Loss"])
 
         # save model
         model_params = model.serialize()
@@ -297,7 +309,7 @@ def run_train_loop(model, data_loader):
         # do anything model needs to after finishing epoch
         model.on_epoch_end(epoch)
 
-        print("Train Epoch {}: Loss {}".format(epoch, np.mean(losses)))
+        print("Train Epoch {}: Loss {}      Reconstruction loss: {}           KL loss: {}".format(epoch, np.mean(losses), np.mean(losses_recon), np.mean(losses_kl)))
 
 
 if __name__ == "__main__":
