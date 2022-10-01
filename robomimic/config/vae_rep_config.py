@@ -16,7 +16,7 @@ class VAE_REPConfig(BaseConfig):
         self.algo.vae.latent_dim = 26                    # VAE latent dimension - set to twice the dimensionality of action space
         self.algo.vae.latent_clip = None                # clip latent space when decoding (set to None to disable)
         # self.algo.vae.kl_weight = 1.                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
-        self.algo.vae.kl_weight = 0.01                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
+        self.algo.vae.kl_weight = 0.001                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
 
         # VAE decoder settings
         self.algo.vae.decoder.is_conditioned = True                         # whether decoder should condition on observation

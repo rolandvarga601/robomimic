@@ -289,6 +289,9 @@ def run_train_loop(model, data_loader):
                 has_printed_batch_info = True
                 print_batch_info(batch)
 
+            batch['obs']['robot0_eef_force'] = batch['obs']['robot0_eef_force']/5.0
+            batch['next_obs']['robot0_eef_force'] = batch['next_obs']['robot0_eef_force']/5.0
+
             # process batch for training
             input_batch = model.process_batch_for_training(batch)
 

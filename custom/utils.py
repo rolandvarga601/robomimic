@@ -104,5 +104,21 @@ def plot_trajectory(dataset_path, demo_num, group_name, signal_name):
 
         plt.show()
 
+def get_trajectory(dataset_path, demo_num, group_name, signal_name):
+    # enforce that the dataset exists
+    assert os.path.exists(dataset_path)
 
+    with h5py.File(dataset_path, 'r') as f:
+        demos = list(f["data"].keys())
+
+        assert (len(demos) >= demo_num), f"Demo number {demo_num} is higher than the number of demonstrations in the dataset"
+
+        if (group_name == ""):
+            signal = f["data/demo_{}/{}".format(demo_num, signal_name)]
+        else:
+            signal = f["data/demo_{}/{}/{}".format(demo_num, group_name, signal_name)]
+
+        print(f"Found '{signal.name}' in the dataset")
+
+        return signal[:]
 
