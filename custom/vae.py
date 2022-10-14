@@ -1,6 +1,7 @@
+from cProfile import label
 from math import floor
 import numpy as np
-from typing import OrderedDict
+from typing import Dict, OrderedDict
 import torch
 import os
 
@@ -14,6 +15,10 @@ from robomimic.config import config_factory
 from robomimic.algo import algo_factory
 
 from utils import get_data_loader
+
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('TKAgg')
 
 # the dataset registry can be found at robomimic/__init__.py
 from robomimic import DATASET_REGISTRY
@@ -43,159 +48,6 @@ def get_demonstration():
 
     return dataset_path
 
-
-
-def setup_encoder(dataset_path):
-
-    config = config_factory(algo_name="vae_rep")
-
-    # read config to set up metadata for observation modalities (e.g. detecting rgb observations)
-    ObsUtils.initialize_obs_utils_with_config(config)
-
-    # Before constructing the encoder, make sure we register all of our observation keys with corresponding modalities
-    # (this will determine how they are processed during training)
-    # obs_modality_mapping = {
-    #     "low_dim": ["robot0_eef_pos", 
-    #         "robot0_eef_quat", 
-    #         "robot0_eef_vel_ang",
-    #         "robot0_eef_vel_lin",
-    #         "robot0_gripper_qpos", 
-    #         "robot0_gripper_qvel",
-    #         "robot0_eef_force", 
-    #         "robot0_joint_pos",
-    #         "robot0_joint_pos_cos",
-    #         "robot0_joint_pos_sin",
-    #         "object", ],
-    #     "rgb": ["agentview_image"],
-    # }
-    # ObsUtils.initialize_obs_modality_mapping_from_dict(modality_mapping=obs_modality_mapping)
-
-    shape_meta = FileUtils.get_shape_metadata_from_dataset(
-        dataset_path=dataset_path,
-        all_obs_keys=sorted((
-            "robot0_eef_force",
-            "robot0_eef_pos", 
-            "robot0_eef_quat",
-            "robot0_eef_vel_ang",
-            "robot0_eef_vel_lin",
-            "robot0_gripper_qpos",
-            "robot0_gripper_qvel", 
-            "object",
-        )),
-    )
-
-    input_shapes = shape_meta["all_shapes"]
-
-    # encoder_layer_dims = [20, 10, 5]
-    # decoder_layer_dims = encoder_layer_dims.reverse()
-    
-    # latent_dim = encoder_layer_dims[-1]
-
-    # set torch device
-    device = TorchUtils.get_torch_device(try_to_use_cuda=True)
-
-
-    vae = VAENets.VAE(
-        input_shapes=input_shapes,
-        output_shapes=input_shapes,
-        device=device,
-        condition_shapes=None,
-        output_squash=(),
-        output_scales=None,
-        output_ranges=None,
-        goal_shapes=None,
-        encoder_kwargs=ObsUtils.obs_encoder_kwargs_from_config(config["observation"]["encoder"]),
-        **VAENets.vae_args_from_config(config["algo"]["vae"]),
-        # encoder_kwargs=ObsUtils.obs_encoder_kwargs_from_config(config["observation"]["encoder"]),
-    )
-    
-    # vae = VAE(
-    #     input_shapes=config,
-    #     output_shapes=input_shapes,
-    #     encoder_layer_dims=encoder_layer_dims,
-    #     decoder_layer_dims=decoder_layer_dims,
-    #     latent_dim=latent_dim,
-    #     device=device,
-    #     condition_shapes=None,
-    #     decoder_is_conditioned=False,
-    #     decoder_reconstruction_sum_across_elements=False,
-    #     latent_clip=None,
-    #     output_squash=(),
-    #     output_scales=None,
-    #     output_ranges=None,
-    #     prior_learn=False,
-    #     prior_is_conditioned=False,
-    #     prior_layer_dims=(),
-    #     prior_use_gmm=False,
-    #     prior_gmm_num_modes=10,
-    #     prior_gmm_learn_weights=False,
-    #     prior_use_categorical=False,
-    #     prior_categorical_dim=10,
-    #     prior_categorical_gumbel_softmax_hard=False,
-    #     goal_shapes=None,
-    #     encoder_kwargs=None,
-    #     encoder_kwargs=None,
-    # )
-
-    print(vae)
-
-    return vae
-
-    # obs_encoder = ObservationEncoder(feature_activation=torch.nn.ReLU)
-
-    # # Shape of the image coming from the "agentview" camera
-    # camera1_shape = [84, 84, 3]
-
-    # # We will use a reconfigurable image processing backbone VisualCore to process the input image observation key
-    # net_class = "VisualCore"  # this is defined in models/base_nets.py
-
-    # # kwargs for VisualCore network
-    # net_kwargs = {
-    #     "input_shape": camera1_shape,
-    #     "backbone_class": "ResNet18Conv",  # use ResNet18 as the visualcore backbone
-    #     "backbone_kwargs": {"pretrained": False, "input_coord_conv": False},
-    #     "pool_class": "SpatialSoftmax",  # use spatial softmax to regularize the model output
-    #     "pool_kwargs": {"num_kp": 32}
-    # }
-
-    # # register the network for processing the observation key
-    # obs_encoder.register_obs_key(
-    #     name="agentview_image",
-    #     shape=camera1_shape,
-    #     net_class=net_class,
-    #     net_kwargs=net_kwargs,
-    # )
-
-    # # We could mix low-dimensional observation, e.g., endeffector position signal, in the encoder
-    # eef_pos_shape = [3]
-    # net = MLP(input_dim=17, output_dim=32, layer_dims=(32,64,128,), output_activation=None)
-    # obs_encoder.register_obs_key(
-    #     name="proprioception",
-    #     shape=eef_pos_shape,
-    #     net=net,
-    # )
-
-    # # Before constructing the encoder, make sure we register all of our observation keys with corresponding modalities
-    # # (this will determine how they are processed during training)
-    # obs_modality_mapping = {
-    #     "low_dim": ["robot0_eef_pos", 
-    #         "robot0_eef_quat", 
-    #         "robot0_eef_vel_ang",
-    #         "robot0_eef_vel_lin",
-    #         "robot0_gripper_qpos", 
-    #         "robot0_gripper_qvel", 
-    #         "object", ],
-    #     "rgb": ["agentview_image"],
-    # }
-    # ObsUtils.initialize_obs_modality_mapping_from_dict(modality_mapping=obs_modality_mapping)
-
-    # # Finally construct the observation encoder
-    # obs_encoder.make()
-
-    # # pretty-print the observation encoder
-    # print(obs_encoder)
-
-    # return obs_encoder
 
 def get_model(dataset_path, device):
     """
@@ -244,7 +96,7 @@ def print_batch_info(batch):
             print("key {} with shape {}".format(k, batch[k].shape))
     print("")
 
-def run_train_loop(model, data_loader):
+def run_train_loop(model, data_loader, data_loader_valid=None):
     """
     Note: this is a stripped down version of @TrainUtils.run_epoch and the train loop
     in the train function in train.py. Logging and evaluation rollouts were removed.
@@ -254,9 +106,15 @@ def run_train_loop(model, data_loader):
         data_loader (torch.utils.data.DataLoader instance): torch DataLoader for
             sampling batches
     """
-    num_epochs = 200
-    gradient_steps_per_epoch = 100
+    num_epochs = 100
+    gradient_steps_per_epoch = 50
     has_printed_batch_info = False
+
+    # Machine generated dataset parameters
+    # num_epochs = 20
+    # gradient_steps_per_epoch = 200
+    # has_printed_batch_info = False
+
 
     # ensure model is in train mode
     model.set_train()
@@ -265,15 +123,35 @@ def run_train_loop(model, data_loader):
     ckpt_folder = os.path.join(os.path.dirname(__file__), "ckpt")
     os.makedirs(ckpt_folder, exist_ok=True)
 
+    loss_history = dict()
+    loss_history['overall'] = []
+    loss_history['reconstruction'] = []
+    loss_history['kl'] = []
+
+    if data_loader_valid is not None:
+        loss_history['overall_valid'] = []
+        loss_history['reconstruction_valid'] = []
+        loss_history['kl_valid'] = []
+
+
     for epoch in range(1, num_epochs + 1): # epoch numbers start at 1
 
         # iterator for data_loader - it yields batches
         data_loader_iter = iter(data_loader)
 
+        if data_loader_valid is not None:
+            data_loader_valid_iter = iter(data_loader_valid)
+
         # record losses
         losses = []
         losses_recon = []
         losses_kl = []
+
+        if data_loader_valid is not None:
+            # record losses
+            valid_losses = []
+            valid_losses_recon = []
+            valid_losses_kl = []
 
         for _ in range(gradient_steps_per_epoch):
 
@@ -289,8 +167,8 @@ def run_train_loop(model, data_loader):
                 has_printed_batch_info = True
                 print_batch_info(batch)
 
-            batch['obs']['robot0_eef_force'] = batch['obs']['robot0_eef_force']/5.0
-            batch['next_obs']['robot0_eef_force'] = batch['next_obs']['robot0_eef_force']/5.0
+            batch['obs']['robot0_eef_force'] = batch['obs']['robot0_eef_force']/1.0
+            batch['next_obs']['robot0_eef_force'] = batch['next_obs']['robot0_eef_force']/1.0
 
             # process batch for training
             input_batch = model.process_batch_for_training(batch)
@@ -304,22 +182,77 @@ def run_train_loop(model, data_loader):
             losses_recon.append(step_log["Reconstruction_Loss"])
             losses_kl.append(step_log["KL_Loss"])
 
-        # save model
-        model_params = model.serialize()
-        model_dict = dict(model=model.serialize())
-        torch.save(model_dict, os.path.join(ckpt_folder, f"epoch{epoch}" + ".pth"))
+        if (epoch+1) % 10 == 0:
+            # save model
+            model_params = model.serialize()
+            model_dict = dict(model=model.serialize())
+            torch.save(model_dict, os.path.join(ckpt_folder, f"epoch{epoch}" + ".pth"))
 
         # do anything model needs to after finishing epoch
         model.on_epoch_end(epoch)
 
-        print("Train Epoch {}: Loss {}      Reconstruction loss: {}           KL loss: {}".format(epoch, np.mean(losses), np.mean(losses_recon), np.mean(losses_kl)))
+        if data_loader_valid is not None:
+            for _ in range(5):
+
+                # load next batch from data loader
+                try:
+                    batch = next(data_loader_valid_iter)
+                except StopIteration:
+                    # data loader ran out of batches - reset and yield first batch
+                    data_loader_valid_iter = iter(data_loader_valid)
+                    batch = next(data_loader_valid_iter)
+
+                obs_norms = []
+                for k in range(data_loader_valid.batch_size):
+                    obs_dict = {key: torch.unsqueeze(batch["obs"][key][k, 0, :], 0) for key in batch["obs"]}
+                    obs_norms.append(ObsUtils.normalize_obs(obs_dict=obs_dict, obs_normalization_stats=data_loader.dataset.get_obs_normalization_stats()))
+                
+                batch["obs"] = {key: torch.cat(tuple(torch.unsqueeze(o[key], 0) for o in obs_norms), 0) for key in obs_dict}
+
+                # process batch for training
+                input_batch = model.process_batch_for_training(batch)
+
+                # for k in range(data_loader_valid.batch_size):
+                #     obs_dict = dict()
+                #     for m in input_batch["obs"]:
+                #         obs_dict[m] = input_batch["obs"][m][k,:]
+                #     input_batch["obs"] = ObsUtils.normalize_obs(obs_dict=obs_dict, obs_normalization_stats=data_loader.dataset.get_obs_normalization_stats())
+
+                # forward and backward pass
+                info = model.train_on_batch(batch=input_batch, epoch=epoch, validate=True)
+
+                # record loss
+                step_log = model.log_info(info)
+                valid_losses.append(step_log["Loss"])
+                valid_losses_recon.append(step_log["Reconstruction_Loss"])
+                valid_losses_kl.append(step_log["KL_Loss"])
+
+
+        loss_history["overall"].append(np.mean(losses))
+        loss_history["reconstruction"].append(np.mean(losses_recon))
+        loss_history["kl"].append(np.mean(losses_kl))
+
+        if data_loader_valid is not None:
+            loss_history["overall_valid"].append(np.mean(valid_losses))
+            loss_history["reconstruction_valid"].append(np.mean(valid_losses_recon))
+            loss_history["kl_valid"].append(np.mean(valid_losses_kl))
+
+        
+        if data_loader_valid is None:
+            print(f"Train Epoch {epoch}: Loss {np.mean(losses)} Rec loss: {np.mean(losses_recon)} KL loss: {np.mean(losses_kl)}")
+        else:
+            print(f"Train Epoch {epoch}: Loss {np.mean(losses)} Rec loss: {np.mean(losses_recon)} KL loss: {np.mean(losses_kl)}" + " "*5 + 
+                    f"Valid loss {np.mean(valid_losses)} Valid Rec loss: {np.mean(valid_losses_recon)} Valid KL loss: {np.mean(valid_losses_kl)}")
+
+    return loss_history
 
 
 if __name__ == "__main__":
     # Download the demonstrations if they are not there
     # dataset_path = get_demonstration()
 
-    dataset_path = os.path.join(os.path.dirname(__file__), "data", "extended_low_dim.hdf5")
+    dataset_path = os.path.join(os.path.dirname(__file__), "data", "extended_low_dim_shaped.hdf5")
+    # dataset_path = os.path.join(os.path.dirname(__file__), "data", "mg_low_dim_extended_shaped.hdf5")
     assert os.path.exists(dataset_path)
 
     # set torch device
@@ -330,9 +263,11 @@ if __name__ == "__main__":
     VAE_model = get_model(dataset_path=dataset_path, device=device)
 
     # This helps loading the data for training
-    data_loader = get_data_loader(dataset_path=dataset_path, seq_length=1)
+    data_loader_train = get_data_loader(dataset_path=dataset_path, seq_length=1, normalize_obs=True, filter_key="train")
+    # data_loader_train = get_data_loader(dataset_path=dataset_path, seq_length=1, normalize_obs=True)
+    data_loader_valid = get_data_loader(dataset_path=dataset_path, seq_length=1, normalize_obs=False, filter_key="valid")
 
-    sample = next(iter(data_loader))
+    sample = next(iter(data_loader_train))
 
     print(f"The first element of the batch for eef position (1 sample sequence): {sample['obs']['robot0_eef_pos'][0]}")
     
@@ -345,6 +280,36 @@ if __name__ == "__main__":
     # train_encoder(encoder=obs_encoder)
 
     # run train loop
-    run_train_loop(model=VAE_model, data_loader=data_loader)
+    loss_history = run_train_loop(model=VAE_model, data_loader=data_loader_train, data_loader_valid=data_loader_valid)
+
+    ax1 = plt.subplot(212)
+    ax1.plot(loss_history["overall"], label='training')
+    ax1.plot(loss_history["overall_valid"], label='validation')
+    ax1.set_xlabel('Epoch')
+    ax1.set_title('Loss')
+    ax1.set_yscale('log')
+    ax1.legend()
+
+    ax2 = plt.subplot(221)
+    ax2.plot(loss_history["reconstruction"], label='training')
+    ax2.plot(loss_history["reconstruction_valid"], label='validation')
+    ax2.set_xlabel('Epoch')
+    ax2.set_title('Reconstruction loss')
+    ax2.set_yscale('log')
+    ax2.legend()
+    
+    ax3 = plt.subplot(222)
+    ax3.plot(loss_history["kl"], label='training')
+    ax3.plot(loss_history["kl_valid"], label='validation')
+    ax3.set_xlabel('Epoch')
+    ax3.set_title('KL loss')
+    ax3.set_yscale('log')
+    ax3.legend()
+
+    plt.show()
+
+    print("Finished")
+
+
 
 

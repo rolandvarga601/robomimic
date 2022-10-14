@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 matplotlib.use('TkAgg')
     
 
-def get_data_loader(dataset_path, seq_length=1):
+def get_data_loader(dataset_path, seq_length=1, batch_size=400, normalize_obs=False, filter_key=None):
     """
     Get a data loader to sample batches of data.
     Args:
@@ -44,8 +44,8 @@ def get_data_loader(dataset_path, seq_length=1):
         goal_mode=None,
         hdf5_cache_mode="low_dim",          # cache everything from dataset except images in memory to avoid repeated file i/o
         hdf5_use_swmr=True,
-        hdf5_normalize_obs=False,
-        filter_by_attribute=None,       # can optionally provide a filter key here
+        hdf5_normalize_obs=normalize_obs,
+        filter_by_attribute=filter_key,       # can optionally provide a filter key here
     )
     print("\n============= Created Dataset =============")
     print(dataset)
@@ -54,7 +54,7 @@ def get_data_loader(dataset_path, seq_length=1):
     data_loader = DataLoader(
         dataset=dataset,
         sampler=None,       # no custom sampling logic (uniform sampling)
-        batch_size=400,     # batches of size 100
+        batch_size=batch_size,     # batches of size 100
         shuffle=True,
         num_workers=0,
         drop_last=True      # don't provide last batch in dataset pass if it's less than 100 in size

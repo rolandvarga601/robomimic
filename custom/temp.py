@@ -14,9 +14,10 @@ if __name__ == '__main__':
 
     # print(mujoco_xml)
 
-    plot_trajectory(hdf5_path, 196, "obs", "robot0_eef_force")
+    # plot_trajectory(hdf5_path, 196, "obs", "robot0_eef_force")
     # plot_trajectory(hdf5_path, 196, "obs", "robot0_eef_vel_lin")
-    # plot_trajectory(hdf5_path, 199, "", "rewards")
+    plot_trajectory(hdf5_path, 2, "", "rewards")
+    # plot_trajectory(hdf5_path, 199, "", "actions")
 
 
     signal = get_trajectory(hdf5_path, 0, "obs", "robot0_eef_force")
