@@ -16,7 +16,7 @@ class VAE_REPConfig(BaseConfig):
 
         # stochastic VAE policy settings
         self.algo.vae.enabled = True                   # whether to train a VAE policy
-        self.algo.vae.latent_dim = 6                    # VAE latent dimension - set to twice the dimensionality of action space
+        self.algo.vae.latent_dim = 14                    # VAE latent dimension - set to twice the dimensionality of action space
         self.algo.vae.latent_clip = None                # clip latent space when decoding (set to None to disable)
         # self.algo.vae.kl_weight = 1.                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
         self.algo.vae.kl_weight = 0.001                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
@@ -59,12 +59,12 @@ class VAE_REPConfig(BaseConfig):
 
         # observation modalities
         self.observation.modalities.obs.low_dim = [             # specify low-dim observations for agent
-            "robot0_eef_force",
+            # "robot0_eef_force",
             "robot0_eef_pos", 
             "robot0_eef_quat",
-            "robot0_eef_vel_ang",
-            "robot0_eef_vel_lin",
+            # "robot0_eef_vel_ang",
+            # "robot0_eef_vel_lin",
             "robot0_gripper_qpos",
-            "robot0_gripper_qvel", 
+            # "robot0_gripper_qvel", 
             "object",
         ]

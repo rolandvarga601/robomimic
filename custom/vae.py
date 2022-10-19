@@ -64,13 +64,13 @@ def get_model(dataset_path, device):
     shape_meta = FileUtils.get_shape_metadata_from_dataset(
         dataset_path=dataset_path, 
         all_obs_keys=sorted((
-            "robot0_eef_force",
+            # "robot0_eef_force",
             "robot0_eef_pos", 
             "robot0_eef_quat",
-            "robot0_eef_vel_ang",
-            "robot0_eef_vel_lin",
+            # "robot0_eef_vel_ang",
+            # "robot0_eef_vel_lin",
             "robot0_gripper_qpos",
-            "robot0_gripper_qvel", 
+            # "robot0_gripper_qvel", 
             "object",
         )),
     )
@@ -167,8 +167,8 @@ def run_train_loop(model, data_loader, data_loader_valid=None):
                 has_printed_batch_info = True
                 print_batch_info(batch)
 
-            batch['obs']['robot0_eef_force'] = batch['obs']['robot0_eef_force']/1.0
-            batch['next_obs']['robot0_eef_force'] = batch['next_obs']['robot0_eef_force']/1.0
+            # batch['obs']['robot0_eef_force'] = batch['obs']['robot0_eef_force']/1.0
+            # batch['next_obs']['robot0_eef_force'] = batch['next_obs']['robot0_eef_force']/1.0
 
             # process batch for training
             input_batch = model.process_batch_for_training(batch)
@@ -257,6 +257,10 @@ if __name__ == "__main__":
 
     # set torch device
     device = torch_utils.get_torch_device(try_to_use_cuda=True)
+
+    seed = 42
+    torch.manual_seed(seed)
+    np.random.seed(seed)
     
     # Setup VAE
     # obs_encoder = setup_encoder(dataset_path=dataset_path)
