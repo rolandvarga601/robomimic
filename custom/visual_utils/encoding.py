@@ -44,7 +44,7 @@ def get_model(dataset_path, device):
     shape_meta = FileUtils.get_shape_metadata_from_dataset(
         dataset_path=dataset_path, 
         all_obs_keys=sorted((
-            "robot0_eef_force",
+            # "robot0_eef_force",
             "robot0_eef_pos", 
             "robot0_eef_quat",
             "robot0_eef_vel_ang",
@@ -66,10 +66,10 @@ def get_model(dataset_path, device):
     return model
 
 
-def load_observer(checkpoint_path):
+def load_observer(checkpoint_path, dataset_path):
     assert os.path.exists(checkpoint_path)
 
-    model = get_model(dataset_path='/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5',
+    model = get_model(dataset_path=dataset_path,
         device='cuda')
 
     ckpt_dict = load_dict_from_checkpoint(checkpoint_path)

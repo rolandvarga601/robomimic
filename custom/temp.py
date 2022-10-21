@@ -6,7 +6,8 @@ import numpy as np
 
 if __name__ == '__main__':
     # hdf5_path = '/home/rvarga/implementation/old_robosuite-master/robosuite/models/assets/demonstrations/SawyerPickAndPlace/image.hdf5'
-    hdf5_path = '/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5'
+    # hdf5_path = '/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5'
+    hdf5_path='/home/rvarga/implementation/robomimic/datasets/lift/ph/low_dim_shaped.hdf5'
 
     # print_hdf5_structure(hdf5_path)
 
@@ -20,15 +21,15 @@ if __name__ == '__main__':
     # plot_trajectory(hdf5_path, 199, "", "actions")
 
 
-    signal = get_trajectory(hdf5_path, 0, "obs", "robot0_eef_force")
+    # signal = get_trajectory(hdf5_path, 0, "obs", "robot0_eef_force")
 
-    for i in range(1, 200):
-        signal = np.vstack((signal, get_trajectory(hdf5_path, i, "obs", "robot0_eef_force")))
+    # for i in range(1, 200):
+    #     signal = np.vstack((signal, get_trajectory(hdf5_path, i, "obs", "robot0_eef_force")))
 
-    min = signal.min()
-    max = signal.max()
-    std = np.std(signal, axis=0)
+    # min = signal.min()
+    # max = signal.max()
+    # std = np.std(signal, axis=0)
 
-    print(f"The min is {min} and the max is {max} and the standard deviation is {std}")
+    # print(f"The min is {min} and the max is {max} and the standard deviation is {std}")
 
     

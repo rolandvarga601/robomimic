@@ -14,13 +14,14 @@ matplotlib.use('TkAgg')
 
 if __name__ == "__main__":
 
-    encoder = load_observer("/home/rvarga/implementation/robomimic/custom/ckpt/epoch49.pth")
-    encoder.set_eval()
-
-    expert_data_path = "/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5"
+    # expert_data_path = "/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5"
     expert_data_path_mg = "/home/rvarga/implementation/robomimic/custom/data/mg_low_dim_extended_shaped.hdf5"
+    expert_data_path='/home/rvarga/implementation/robomimic/datasets/lift/mg/low_dim_shaped.hdf5'
 
     assert os.path.exists(expert_data_path)
+
+    encoder = load_observer("/home/rvarga/implementation/robomimic/custom/ckpt/epoch99.pth", expert_data_path)
+    encoder.set_eval()
 
     data_loader_train = get_data_loader(dataset_path=expert_data_path, seq_length=1, normalize_obs=True, filter_key="train")
     data_loader_valid = get_data_loader(dataset_path=expert_data_path, seq_length=1, normalize_obs=False, filter_key="valid")

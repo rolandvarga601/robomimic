@@ -251,7 +251,8 @@ if __name__ == "__main__":
     # Download the demonstrations if they are not there
     # dataset_path = get_demonstration()
 
-    dataset_path = os.path.join(os.path.dirname(__file__), "data", "extended_low_dim_shaped.hdf5")
+    # dataset_path = os.path.join(os.path.dirname(__file__), "data", "extended_low_dim_shaped.hdf5")
+    dataset_path='/home/rvarga/implementation/robomimic/datasets/lift/mg/low_dim_shaped.hdf5'
     # dataset_path = os.path.join(os.path.dirname(__file__), "data", "mg_low_dim_extended_shaped.hdf5")
     assert os.path.exists(dataset_path)
 

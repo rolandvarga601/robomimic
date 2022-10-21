@@ -39,9 +39,9 @@ class VAE_REPConfig(BaseConfig):
         self.algo.vae.prior.categorical_temp_anneal_step = 0.001            # linear temp annealing rate
         self.algo.vae.prior.categorical_min_temp = 0.3                      # lowest gumbel-softmax temp
 
-        self.algo.vae.encoder_layer_dims = (34, 22, 16)                          # encoder MLP layer dimensions
-        self.algo.vae.decoder_layer_dims = (16, 22, 34)                          # decoder MLP layer dimensions
-        self.algo.vae.prior_layer_dims = (34, 22, 16)                            # prior MLP layer dimensions (if learning conditioned prior)
+        self.algo.vae.encoder_layer_dims = (22, 16)                          # encoder MLP layer dimensions
+        self.algo.vae.decoder_layer_dims = (16, 22)                          # decoder MLP layer dimensions
+        self.algo.vae.prior_layer_dims = (22, 16)                            # prior MLP layer dimensions (if learning conditioned prior)
 
     def observation_config(self):
         """
