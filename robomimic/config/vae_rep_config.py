@@ -60,8 +60,8 @@ class VAE_REPConfig(BaseConfig):
         # observation modalities
         self.observation.modalities.obs.low_dim = [             # specify low-dim observations for agent
             # "robot0_eef_force",
-            "robot0_eef_pos", 
-            "robot0_eef_quat",
+            # "robot0_eef_pos", 
+            # "robot0_eef_quat",
             # "robot0_eef_vel_ang",
             # "robot0_eef_vel_lin",
             "robot0_gripper_qpos",
