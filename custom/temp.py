@@ -7,7 +7,7 @@ import numpy as np
 if __name__ == '__main__':
     # hdf5_path = '/home/rvarga/implementation/old_robosuite-master/robosuite/models/assets/demonstrations/SawyerPickAndPlace/image.hdf5'
     # hdf5_path = '/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5'
-    hdf5_path='/home/rvarga/implementation/robomimic/datasets/lift/ph/low_dim_shaped_donemode0.hdf5'
+    hdf5_path='/home/rvarga/implementation/robomimic/datasets/lift/mg/low_dim_shaped_donemode0.hdf5'
 
     # print_hdf5_structure(hdf5_path)
 
@@ -17,16 +17,21 @@ if __name__ == '__main__':
 
     # plot_trajectory(hdf5_path, 196, "obs", "robot0_eef_force")
     # plot_trajectory(hdf5_path, 196, "obs", "robot0_eef_vel_lin")
-    # plot_trajectory(hdf5_path, 2, "", "rewards")
+    plot_trajectory(hdf5_path, 922, "", "dones")
     # plot_trajectory(hdf5_path, 199, "", "actions")
 
 
-    signal = [np.array(get_trajectory(hdf5_path, idx, "obs", "object"))[0, 0:3] for idx in range(200)]
+    # signal = [get_trajectory(hdf5_path, idx, "", "dones") for idx in range(1, 1501)]
 
     print()
 
+    # signal = []
+
     # for i in range(1, 200):
-    #     signal = np.vstack((signal, get_trajectory(hdf5_path, i, "obs", "robot0_eef_force")))
+    #     episode = get_trajectory(hdf5_path, i, "", "dones")
+    #     signal = np.vstack((signal, episode))
+    #     if episode.max():
+    #         print(f"Episode {i} was successfull")
 
     # min = signal.min()
     # max = signal.max()

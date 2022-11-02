@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     # expert_data_path = "/home/rvarga/implementation/robomimic/custom/data/extended_low_dim_shaped.hdf5"
     expert_data_path_mg = "/home/rvarga/implementation/robomimic/custom/data/mg_low_dim_extended_shaped.hdf5"
-    expert_data_path='/home/rvarga/implementation/robomimic/datasets/lift/mg/low_dim_shaped.hdf5'
+    expert_data_path='/home/rvarga/implementation/robomimic/datasets/lift/mg/low_dim_shaped_donemode0.hdf5'
 
     assert os.path.exists(expert_data_path)
 
@@ -44,8 +44,8 @@ if __name__ == "__main__":
 
     info = encoder.train_on_batch(batch=input_batch, epoch=1, validate=True)
 
-    robot_positions = input_batch['obs']['robot0_eef_pos'].cpu().detach().numpy()
-    pred_robot_positions = info['predictions']['actions']['robot0_eef_pos'].cpu().detach().numpy()
+    robot_positions = input_batch['obs']['object'].cpu().detach().numpy()
+    pred_robot_positions = info['predictions']['actions']['object'].cpu().detach().numpy()
 
     # robot_force = input_batch['obs']['robot0_eef_force'].cpu().detach().numpy()
     # pred_robot_force = info['predictions']['actions']['robot0_eef_force'].cpu().detach().numpy()

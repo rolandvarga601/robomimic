@@ -65,8 +65,8 @@ def get_model(dataset_path, device):
         dataset_path=dataset_path, 
         all_obs_keys=sorted((
             # "robot0_eef_force",
-            "robot0_eef_pos", 
-            "robot0_eef_quat",
+            # "robot0_eef_pos", 
+            # "robot0_eef_quat",
             # "robot0_eef_vel_ang",
             # "robot0_eef_vel_lin",
             "robot0_gripper_qpos",
@@ -252,7 +252,7 @@ if __name__ == "__main__":
     # dataset_path = get_demonstration()
 
     # dataset_path = os.path.join(os.path.dirname(__file__), "data", "extended_low_dim_shaped.hdf5")
-    dataset_path='/home/rvarga/implementation/robomimic/datasets/lift/mg/low_dim_shaped.hdf5'
+    dataset_path='/home/rvarga/implementation/robomimic/datasets/lift/mg/low_dim_shaped_donemode0.hdf5'
     # dataset_path = os.path.join(os.path.dirname(__file__), "data", "mg_low_dim_extended_shaped.hdf5")
     assert os.path.exists(dataset_path)
 
@@ -274,7 +274,7 @@ if __name__ == "__main__":
 
     sample = next(iter(data_loader_train))
 
-    print(f"The first element of the batch for eef position (1 sample sequence): {sample['obs']['robot0_eef_pos'][0]}")
+    # print(f"The first element of the batch for eef position (1 sample sequence): {sample['obs']['robot0_eef_pos'][0]}")
     
     # for sensor in sample['obs']:
     #     print(sample['obs']["{}".format(sensor)][0])

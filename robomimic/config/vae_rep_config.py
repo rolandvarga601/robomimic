@@ -16,10 +16,10 @@ class VAE_REPConfig(BaseConfig):
 
         # stochastic VAE policy settings
         self.algo.vae.enabled = True                   # whether to train a VAE policy
-        self.algo.vae.latent_dim = 14                    # VAE latent dimension - set to twice the dimensionality of action space
+        self.algo.vae.latent_dim = 19                    # VAE latent dimension - set to twice the dimensionality of action space
         self.algo.vae.latent_clip = None                # clip latent space when decoding (set to None to disable)
         # self.algo.vae.kl_weight = 1.                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
-        self.algo.vae.kl_weight = 0.001                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
+        self.algo.vae.kl_weight = 0.0001                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
         # self.algo.vae.kl_weight = 0.04                    # beta-VAE weight to scale KL loss relative to reconstruction loss in ELBO
 
         # VAE decoder settings
@@ -39,9 +39,13 @@ class VAE_REPConfig(BaseConfig):
         self.algo.vae.prior.categorical_temp_anneal_step = 0.001            # linear temp annealing rate
         self.algo.vae.prior.categorical_min_temp = 0.3                      # lowest gumbel-softmax temp
 
-        self.algo.vae.encoder_layer_dims = (22, 16)                          # encoder MLP layer dimensions
-        self.algo.vae.decoder_layer_dims = (16, 22)                          # decoder MLP layer dimensions
-        self.algo.vae.prior_layer_dims = (22, 16)                            # prior MLP layer dimensions (if learning conditioned prior)
+        # self.algo.vae.encoder_layer_dims = (22, 16)                          # encoder MLP layer dimensions
+        # self.algo.vae.decoder_layer_dims = (16, 22)                          # decoder MLP layer dimensions
+        # self.algo.vae.prior_layer_dims = (22, 16)                            # prior MLP layer dimensions (if learning conditioned prior)
+
+        self.algo.vae.encoder_layer_dims = (19,)                          # encoder MLP layer dimensions
+        self.algo.vae.decoder_layer_dims = (19,)                          # decoder MLP layer dimensions
+        self.algo.vae.prior_layer_dims = (19,)                            # prior MLP layer dimensions (if learning conditioned prior)
 
     def observation_config(self):
         """
